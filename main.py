@@ -26,7 +26,7 @@ while running:
         running = False
 
     screen.blit(bg_image, (0, 0))
-    screen.blit(bug_image, ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2) - y))    
+    screen.blit(bug_image, ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2)))    
     
     pygame.display.flip()
     clock.tick(60)
