@@ -1,17 +1,19 @@
 from src.event_handler import EventHandler
+import os
 import pygame
 import sys
-from src import BG_IMAGE_PATH
+from src.paths import BG_IMAGE_PATH, BUG_STATICS
 from src.config import SCREEN_WIDTH, SCREEN_HEIGHT
 
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Idle RPG")
 
-bg_raw = pygame.image.load(BG_IMAGE_PATH).convert()
+bg_image = pygame.image.load(BG_IMAGE_PATH).convert()
 
-screen_size = screen.get_size()
-bg_image = pygame.transform.scale(bg_raw, screen_size)
+bg_image = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+bug_image = pygame.image.load(os.path.join(BUG_STATICS, "thinking-face.png")).convert() 
 
 clock = pygame.time.Clock()
 
@@ -23,6 +25,7 @@ while running:
         running = False
             
     screen.blit(bg_image, (0, 0))
+    screen.blit(bug_image, ((SCREEN_WIDTH - bug_image.get_size()[0]), (SCREEN_HEIGHT - bug_image.get_size()[1])))    
     
     pygame.display.flip()
 
