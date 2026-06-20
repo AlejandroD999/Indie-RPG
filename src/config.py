@@ -1,0 +1,3 @@
+# Display
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 500
