@@ -13,9 +13,10 @@ bg_image = pygame.image.load(BG_IMAGE_PATH).convert()
 
 bg_image = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
-bug_image = pygame.image.load(os.path.join(BUG_STATICS, "thinking-face.png")).convert() 
-
+bug_image = pygame.image.load(os.path.join(BUG_STATICS, "bug-1.png")).convert_alpha() 
+bug_image = pygame.transform.scale(bug_image, ((SCREEN_WIDTH / 12), (SCREEN_HEIGHT / 10)))
 clock = pygame.time.Clock()
+
 
 event = EventHandler()
 running = True
@@ -23,12 +24,11 @@ while running:
 
     if event.quit():
         running = False
-            
+
     screen.blit(bg_image, (0, 0))
-    screen.blit(bug_image, ((SCREEN_WIDTH - bug_image.get_size()[0]), (SCREEN_HEIGHT - bug_image.get_size()[1])))    
+    screen.blit(bug_image, ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2) - y))    
     
     pygame.display.flip()
-
     clock.tick(60)
 
 pygame.quit()
