@@ -1,10 +1,9 @@
-import sys
+from src.event_handler import EventHandler
 import pygame
-import random
+import sys
 from src import BG_IMAGE_PATH
+from src.config import SCREEN_WIDTH, SCREEN_HEIGHT
 
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 500
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Idle RPG")
@@ -16,13 +15,13 @@ bg_image = pygame.transform.scale(bg_raw, screen_size)
 
 clock = pygame.time.Clock()
 
+event = EventHandler()
 running = True
 while running:
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        
+    if event.quit():
+        running = False
+            
     screen.blit(bg_image, (0, 0))
     
     pygame.display.flip()
