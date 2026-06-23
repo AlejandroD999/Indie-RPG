@@ -2,6 +2,7 @@ from src.event_handler import EventHandler
 import os
 import pygame
 import sys
+from src.characters.player import Player
 from src.paths import BG_IMAGE_PATH, BUG_STATICS
 from src.config import SCREEN_WIDTH, SCREEN_HEIGHT
 
@@ -18,12 +19,14 @@ bug_image = pygame.transform.scale(bug_image, ((SCREEN_WIDTH / 12), (SCREEN_HEIG
 clock = pygame.time.Clock()
 
 
-event = EventHandler()
+player = Player() 
 running = True
 while running:
-
-    if event.quit():
-        running = False
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        player.handle_event(event)
+    
 
     screen.blit(bg_image, (0, 0))
     screen.blit(bug_image, ((SCREEN_WIDTH / 2), (SCREEN_HEIGHT / 2)))    
