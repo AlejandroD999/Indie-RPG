@@ -1,9 +1,8 @@
-from src.event_handler import EventHandler
+from src.paths import BG_IMAGE_PATH, BUG_STATICS
 import os
 import pygame
 import sys
 from src.characters.player import Player
-from src.paths import BG_IMAGE_PATH, BUG_STATICS
 from src.config import SCREEN_WIDTH, SCREEN_HEIGHT
 
 

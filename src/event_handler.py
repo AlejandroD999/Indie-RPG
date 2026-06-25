@@ -1,6 +1,5 @@
 import pygame
-# Event Handling to be moved into player / character class
-    # Make it a func for event
+
 class EventHandler:
     def __init__(self):
         pass
