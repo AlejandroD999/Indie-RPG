@@ -1,12 +1,13 @@
-from .paths import BG_IMAGE_PATH, BUG_STATICS
 from .characters.player import Player
-import sys
+from .config import SCREEN_WIDTH, SCREEN_HEIGHT
+from .paths import BG_IMAGE_PATH, BUG_STATICS
 import pygame
+import sys
 
 class Game:
     def __init__(self):
         pygame.init()
-        self.screen_size = (900, 500)
+        self.screen_size = (SCREEN_WIDTH, SCREEN_HEIGHT) 
         self.screen = pygame.display.set_mode(self.screen_size)        
         self.clock = pygame.time.Clock()
         self.__bg_image = pygame.transform.scale(pygame.image.load(BG_IMAGE_PATH), self.screen_size).convert()
@@ -29,7 +30,7 @@ class Game:
         pygame.display.flip()
 
     def run(self):
-
+        
         while self.running:
             self.handle_events()
             self.draw()
