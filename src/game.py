@@ -1,4 +1,5 @@
 from .paths import BG_IMAGE_PATH, BUG_STATICS
+from .characters.player import Player
 import sys
 import pygame
 
@@ -8,20 +9,30 @@ class Game:
         self.screen_size = (900, 500)
         self.screen = pygame.display.set_mode(self.screen_size)        
         self.clock = pygame.time.Clock()
-
-        pygame.display.set_caption("Ethereal RPG")
         self.__bg_image = pygame.transform.scale(pygame.image.load(BG_IMAGE_PATH), self.screen_size).convert()
+        self.running = True
+        pygame.display.set_caption("Ethereal RPG")
+        
+        self.player = Player(0, 0) 
+        
+    def handle_events(self):
+        ''' Handle all game events'''
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+
+            self.player.handle_event(event)
+    
+    def draw(self):
+        ''' Place elements into screen '''
+        self.screen.blit(self.__bg_image, (0, 0))
+        pygame.display.flip()
 
     def run(self):
-        running = True
-        
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
-            
-            self.screen.blit(self.__bg_image, (0, 0))
-            pygame.display.flip()
+
+        while self.running:
+            self.handle_events()
+            self.draw()
             self.clock.tick(60)            
         
         pygame.quit()
