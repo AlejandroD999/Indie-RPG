@@ -6,6 +6,7 @@ import os
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__()
+        self.__SCREEN_RECT = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.sprites = []
         self.sprites.append(pygame.image.load(os.path.join(BUG_STATICS, "bug-1.png")).convert_alpha())
         self.current_sprite = 0
@@ -15,13 +16,9 @@ class Player(pygame.sprite.Sprite):
         self.rect.topleft = [pos_x, pos_y]
     
     def update(self):
-
-        if self.rect.left < 0:
-            self.rect.left = 0
         
-        elif self.rect.right > SCREEN_WIDTH:
-            self.rect.right = SCREEN_WIDTH
-            
+        self.rect.clamp_ip(self.__SCREEN_RECT)
+
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x, self.rect.y))
         
@@ -29,6 +26,7 @@ class Player(pygame.sprite.Sprite):
     def handle_event(self, event, speed):
         
         if event.key == pygame.K_SPACE:
+            self.rect.y -= speed
             print("JUMP")
 
         elif event.key == pygame.K_a:
