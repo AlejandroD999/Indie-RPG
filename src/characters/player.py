@@ -1,20 +1,44 @@
+from ..paths import BUG_STATICS
+from ..config import SCREEN_WIDTH, SCREEN_HEIGHT
 import pygame
+import os
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        pass
+    def __init__(self, pos_x, pos_y):
+        super().__init__()
+        self.sprites = []
+        self.sprites.append(pygame.image.load(os.path.join(BUG_STATICS, "bug-1.png")).convert_alpha())
+        self.current_sprite = 0
 
-    def handle_event(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                # jump
-                print("JUMP")
-            elif event.key == pygame.K_a:
-                # left
-                print("LEFT")
-            elif event.key == pygame.K_d:
-                # right
-                print("RIGHT") 
-            elif event.key == pygame.K_s:
-                # down / crouch
-                print("DOWN") 
+        self.image = self.sprites[self.current_sprite]
+        self.rect = self.image.get_rect()
+        self.rect.topleft = [pos_x, pos_y]
+    
+    def update(self):
+
+        if self.rect.left < 0:
+            self.rect.left = 0
+        
+        elif self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+            
+    def draw(self, screen):
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+        
+
+    def handle_event(self, event, speed):
+        
+        if event.key == pygame.K_SPACE:
+            print("JUMP")
+
+        elif event.key == pygame.K_a:
+            # left
+            self.rect.x -= speed
+
+        elif event.key == pygame.K_d:
+            # right
+            self.rect.x += speed
+
+        elif event.key == pygame.K_s:
+            # down / crouch
+            print("DOWN") 
