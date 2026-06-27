@@ -15,14 +15,17 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = [pos_x, pos_y]
 
+        # Stats
+        self.speed = 5
+        self.jump_height = 14
+
         # Jumping
         self.jumping = False
         self.GROUND = self.rect.y
                 
-        self.gravity = 0.8
+        self.gravity = 0.7
         self.y_velocity = 0
-        self.jump_height = 16 
-
+        
         self.standing_surface = None
         self.jumping_surface = None
 
@@ -37,28 +40,23 @@ class Player(pygame.sprite.Sprite):
                 self.jumping = False
                 self.y_velocity = 0 
         
-
+        self.handle_event()
         self.rect.clamp_ip(self.__SCREEN_RECT)
 
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x, self.rect.y))
         
 
-    def handle_event(self, event, speed):
-        # TODO change into pygame.key.get_pressed() and move to update()        
-        if event.key == pygame.K_SPACE and not self.jumping:
+    def handle_event(self):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_SPACE] and not self.jumping:
             self.y_velocity = self.jump_height    
             self.jumping = True
             print("JUMP")
 
-        elif event.key == pygame.K_a:
-            # left
-            self.rect.x -= speed
-
-        elif event.key == pygame.K_d:
-            # right
-            self.rect.x += speed
-
-        elif event.key == pygame.K_s:
-            # down / crouch
-            print("DOWN") 
+        if keys[pygame.K_a]:
+            self.rect.x -= self.speed
+            
+        if keys[pygame.K_d]:
+            self.rect.x += self.speed

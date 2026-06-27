@@ -24,8 +24,6 @@ class Game:
             if event.type == pygame.QUIT:
                 self.running = False
             
-            if event.type == pygame.KEYDOWN:
-                self.player.handle_event(event, 5)
     
     def draw(self):
         ''' Place elements into screen '''
