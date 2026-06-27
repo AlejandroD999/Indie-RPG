@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
 
         # Stats
         self.speed = 5
+        self.dash_speed = self.speed * 1.5
         self.jump_height = 14
 
         # Jumping
@@ -29,7 +30,15 @@ class Player(pygame.sprite.Sprite):
         self.standing_surface = None
         self.jumping_surface = None
 
+        #  Dash & Orientation
+        self.orientation = "right"
+
+        self.dashing = False
+        self.dash_duration = 15
+        self.dash_timer = 0
+
     def update(self):
+        keys = pygame.key.get_pressed()
 
         if self.jumping:
             self.rect.y -= self.y_velocity
@@ -39,24 +48,41 @@ class Player(pygame.sprite.Sprite):
                 self.rect.y = self.GROUND
                 self.jumping = False
                 self.y_velocity = 0 
-        
-        self.handle_event()
+
+        if self.dashing:
+            if self.orientation == "right":
+                self.rect.x += self.dash_speed
+
+            elif self.orientation == "left":
+                self.rect.x -= self.dash_speed
+
+            self.dash_timer -= 1
+
+            if self.dash_timer <= 0:
+                self.dashing = False         
+        # Basic Movement        
+
+        if keys[pygame.K_a]:
+            self.orientation = "left"
+            self.rect.x -= self.speed
+            
+        if keys[pygame.K_d]:
+            self.orientation = "right"    
+            self.rect.x += self.speed
+
         self.rect.clamp_ip(self.__SCREEN_RECT)
 
     def draw(self, screen):
         screen.blit(self.image, (self.rect.x, self.rect.y))
         
 
-    def handle_event(self):
-        keys = pygame.key.get_pressed()
-
-        if keys[pygame.K_SPACE] and not self.jumping:
-            self.y_velocity = self.jump_height    
-            self.jumping = True
-            print("JUMP")
-
-        if keys[pygame.K_a]:
-            self.rect.x -= self.speed
-            
-        if keys[pygame.K_d]:
-            self.rect.x += self.speed
+    def handle_event(self, event):
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and not self.jumping:
+                self.y_velocity = self.jump_height    
+                self.jumping = True
+        
+            if event.key == pygame.K_LSHIFT and not self.dashing:
+                self.dashing = True
+                self.dash_timer = self.dash_duration

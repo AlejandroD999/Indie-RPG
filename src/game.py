@@ -20,10 +20,12 @@ class Game:
         
     def handle_events(self):
         ''' Handle all game events'''
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            
+
+            self.player.handle_event(event)            
     
     def draw(self):
         ''' Place elements into screen '''
