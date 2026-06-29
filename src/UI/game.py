@@ -1,6 +1,6 @@
-from .characters.player import Player
-from .config import SCREEN_WIDTH, SCREEN_HEIGHT
-from .paths import BG_IMAGE_PATH, BUG_STATICS
+from ..characters.player import Player
+from ..config import SCREEN_WIDTH, SCREEN_HEIGHT
+from ..paths import BG_IMAGE_PATH, BUG_STATICS
 import pygame
 import sys
 
