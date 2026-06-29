@@ -8,7 +8,10 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.__SCREEN_RECT = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.sprites = []
-        self.sprites.append(pygame.image.load(os.path.join(PLAYER_STATICS, "stick_man_0.png")).convert_alpha())
+        
+        player_image_0 = pygame.image.load(os.path.join(PLAYER_STATICS, "stick_man_1.png")).convert_alpha()
+        
+        self.sprites.append(player_image_0)
         self.current_sprite = 0
 
         self.image = self.sprites[self.current_sprite]
