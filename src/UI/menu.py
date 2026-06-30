@@ -1,11 +1,22 @@
+from ..config import SCREEN_WIDTH, SCREEN_HEIGHT
+from ..paths import MAIN_MENU_STATICS
 import pygame
-import sys
+import os
 
 class MainMenu():
     def __init__(self, app):
         self.app = app
 
-        self.play_rect = pygame.Rect(50, 10, 50, 100)
+        self.menu_buttons = {}
+        self.possible_buttons = ["play", "options", "quit"] 
+
+        for button_type in self.possible_buttons:
+            button_image =  pygame.image.load(os.path.join(MAIN_MENU_STATICS, f"{button_type}_button.png"))
+
+            self.menu_buttons[button_type] = {
+                "image": button_image,
+                "rect": button_image.get_rect()
+            }
 
     def mouse_collision(self, mouse_pos, object):
         return object.collidepoint(mouse_pos)
@@ -26,7 +37,13 @@ class MainMenu():
 
     def draw(self):
         self.app.screen.fill((0, 0, 0))
-        
-        pygame.draw.rect(self.app.screen, (255, 0, 0), self.play_rect)
+
+        for button_type in self.possible_buttons:
+            btn_img = self.menu_buttons[button_type]["image"]
+            btn_rect = self.menu_buttons[button_type]["rect"]
+            y = (SCREEN_HEIGHT / 2)
+
+            self.app.screen.blit(btn_img, (0, 0))
+
 
         pygame.display.flip()
