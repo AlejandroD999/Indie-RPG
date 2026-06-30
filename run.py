@@ -1,6 +1,6 @@
-from src.UI.game import Game
+from src.app import App 
 
-game = Game()
+app = App()
 
 if __name__ == "__main__":
-    game.run()
+    app.run()
