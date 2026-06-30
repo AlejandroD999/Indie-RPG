@@ -36,14 +36,13 @@ class MainMenu():
         pass
 
     def draw(self):
-        self.app.screen.fill((0, 0, 0))
+        self.app.screen.fill((255, 255, 255))
 
         for button_type in self.possible_buttons:
             btn_img = self.menu_buttons[button_type]["image"]
             btn_rect = self.menu_buttons[button_type]["rect"]
-            y = (SCREEN_HEIGHT / 2)
 
-            self.app.screen.blit(btn_img, (0, 0))
+            self.app.screen.blit(btn_img, (100, 100))
 
 
         pygame.display.flip()
