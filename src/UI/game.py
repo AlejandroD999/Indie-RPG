@@ -14,7 +14,7 @@ class Game:
             (self.app.screen_size[1] - (self.app.screen_size[1] / 4))) 
 
     def update(self):
-        pass
+        self.player.update()
 
     def handle_events(self):
         ''' Handle all game events'''

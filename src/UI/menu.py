@@ -20,6 +20,7 @@ class MainMenu():
 
                 if self.mouse_collision(mouse_pos, self.play_rect):
                     self.app.change_screen(self.app.game)
+                    return
     def update(self):
         pass
 
