@@ -6,7 +6,6 @@ import os
 class MainMenu():
     def __init__(self, app):
         self.app = app
-
         self.menu_buttons = {}
         self.possible_buttons = ["play", "options", "quit"] 
 
@@ -17,6 +16,13 @@ class MainMenu():
                 "image": button_image,
                 "rect": button_image.get_rect()
             }
+        
+        self.raw_bg = pygame.image.load(
+            os.path.join(MAIN_MENU_STATICS, "green_art.png")
+        )
+        self.background_image = pygame.transform.scale(self.raw_bg, self.app.screen_size) 
+
+        
 
     def mouse_collision(self, mouse_pos, object):
         return object.collidepoint(mouse_pos)
@@ -36,8 +42,8 @@ class MainMenu():
         pass
 
     def draw(self):
-        self.app.screen.fill((255, 255, 255))
-
+        self.app.screen.blit(self.background_image, (0, 0))
+            
         for button_type in self.possible_buttons:
             btn_img = self.menu_buttons[button_type]["image"]
             btn_rect = self.menu_buttons[button_type]["rect"]
