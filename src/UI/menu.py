@@ -21,33 +21,32 @@ class MainMenu():
         self.init_elements()
         
     def init_elements(self):
-        btn_x = self.screen_width / 2
-        btn_y = self.screen_height / 4 
+        btn_y = self.screen_height // 4 
 
         for button_type in self.possible_buttons:
             raw_btn_img =  pygame.image.load(os.path.join(MAIN_MENU_STATICS, f"{button_type}_button.png")).convert_alpha()
             
-            btn_img = pygame.transform.scale(raw_btn_img, (self.screen_width / 4, self.screen_height / 6))
-            btn_x = self.screen_width // 2 - (btn_img.get_width() / 2)
-            btn_margin = btn_img.get_height() + (btn_img.get_height() / 8)
+            btn_img = pygame.transform.scale(raw_btn_img, (self.screen_width // 4, self.screen_height // 6))
 
-            self.menu_buttons[button_type] = Button(btn_img, btn_x, btn_y)                
+            btn_x = self.screen_width // 2 - (btn_img.get_width() // 2)
+            btn_margin = btn_img.get_height() + (btn_img.get_height() // 8)
+
+            self.menu_buttons[button_type] = Button(btn_img, (btn_x, btn_y))                
             btn_y += btn_margin
 
-            
-
-    def mouse_collision(self, mouse_pos, object):
-        return object.collidepoint(mouse_pos)
+    def rect_collision(self, object_1, object_2):
+        return object_1.collidepoint(object_2)
 
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
             
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
 
-                if self.mouse_collision(mouse_pos, self.play_rect):
+                if self.rect_collision(self.menu_buttons['play'].get_rect(), mouse_pos):
+                    print("Collision")
                     self.app.change_screen(self.app.game)
                     return
     def update(self):

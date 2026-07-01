@@ -1,23 +1,16 @@
 import pygame
 
 class Button:
-    def __init__(self, image, pos_x, pos_y):
+    def __init__(self, image, pos):
         self.image = image
-        self.pos_x = pos_x
-        self.pos_y = pos_y
+        self.rect = self.image.get_rect(topleft=(int(pos[0]), int(pos[1])))
+        self.pos = pos
 
-        try:
-            self.rect = self.image.get_rect()
-        except AttributeError:
-            print("Image failed to load", AttributeError)
-    
     def get_img(self):
         return self.image
     
+    def get_rect(self):
+        return self.rect
+    
     def get_pos(self):
-        return (self.pos_x, self.pos_y)
-
-if __name__ == '__main__':
-    btn = Button(None, 20, 10)
-
-    print(btn.pos_x, btn.pos_y)
+        return self.pos 
