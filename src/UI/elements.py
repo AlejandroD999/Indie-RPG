@@ -10,6 +10,12 @@ class Button:
             self.rect = self.image.get_rect()
         except AttributeError:
             print("Image failed to load", AttributeError)
+    
+    def get_img(self):
+        return self.image
+    
+    def get_pos(self):
+        return (self.pos_x, self.pos_y)
 
 if __name__ == '__main__':
     btn = Button(None, 20, 10)
