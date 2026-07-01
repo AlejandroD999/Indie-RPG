@@ -34,21 +34,26 @@ class MainMenu():
             self.menu_buttons[button_type] = Button(btn_img, (btn_x, btn_y))                
             btn_y += btn_margin
 
-    def rect_collision(self, object_1, object_2):
-        return object_1.collidepoint(object_2)
-
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.running = False
+                self.app.running = False
             
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
 
-                if self.rect_collision(self.menu_buttons['play'].get_rect(), mouse_pos):
+                if self.menu_buttons['play'].get_rect().collidepoint(mouse_pos):
                     print("Collision")
                     self.app.change_screen(self.app.game)
                     return
+                
+                elif self.menu_buttons['options'].get_rect().collidepoint(mouse_pos):
+                    print("Options")
+                    return
+
+                elif self.menu_buttons['quit'].get_rect().collidepoint(mouse_pos):
+                    self.app.running = False
+
     def update(self):
         pass
 

@@ -2,6 +2,7 @@ from .config import SCREEN_WIDTH, SCREEN_HEIGHT
 from .UI.game import Game
 from .UI.menu import MainMenu
 import pygame
+import sys
 
 class App:
     def __init__(self):
@@ -26,4 +27,5 @@ class App:
             self.current_screen.draw()
 
             self.clock.tick(60)
-        pygame.quit
+        pygame.quit()
+        sys.exit()
