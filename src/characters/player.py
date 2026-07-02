@@ -1,4 +1,4 @@
-from ..paths import BUG_STATICS, PLAYER_STATICS
+from ..paths import PLAYER_STATICS
 from ..config import SCREEN_WIDTH, SCREEN_HEIGHT
 import pygame
 import os
@@ -7,14 +7,12 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__()
         self.__SCREEN_RECT = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.sprites = []
         
-        player_image_0 = pygame.image.load(os.path.join(PLAYER_STATICS, "stick_man_1.png")).convert_alpha()
-        
-        self.sprites.append(player_image_0)
-        self.current_sprite = 0
+        self.sprite_sheet = pygame.image.load(
+            os.path.join(PLAYER_STATICS, "player_running.png")
+        ) 
 
-        self.image = self.sprites[self.current_sprite]
+        self.image = self.sprite_sheet
         self.rect = self.image.get_rect()
         self.rect.topleft = [pos_x, pos_y]
 
