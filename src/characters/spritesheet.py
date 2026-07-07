@@ -1,35 +1,44 @@
+import json
 import os
 import pygame
 
 class SpriteSheet:
-    def __init__(self, file_path):
+    def __init__(self, filename):
+        self.filename = filename
 
         try:
-            self.sheet = pygame.image.load(file_path).convert()
+            self.sheet = pygame.image.load(self.filename).convert()
         except pygame.error as e:
-            print(f"Unabel to load sprite sheet image: {e}") 
+            print(f"Unable to load sprite sheet image: {e}") 
             raise SystemExit(e)
         
-    def image_at(self, rectangle, color_key = None):
+        self.meta_data_path = self.filename.replace('png', 'json')
+        self.meta_data = self.load_meta_data(self.meta_data_path)
+
+    def load_meta_data(self, meta_data: str):
+
+        try:
+            with open(meta_data, 'r') as f:
+                data = json.load(f)
+        except FileNotFoundError:
+            print(f"Failed to load Meta Data: {f}")
+            return None
+            
+        return data
+
+        
+    def get_sprite(self, rectangle, color_key = None):
         # Load image from rectangle
+        # Rect -> x,y,w,h
+
         rect = pygame.Rect(rectangle)
-        image = pygame.Surface(rect.size).convert()
-        image.blit(self.sheet, (0, 0), rect)
+        sprite = pygame.Surface(rect.size).convert()
+        sprite.blit(self.sheet, (0, 0), rect)
 
         if color_key is not None:
             if color_key == -1:
-                color_key = image.get_at((0, 0))
-            image.set_colorkey(color_key, pygame.RLEACCEL)
+                color_key = sprite.get_at((0, 0))
+            sprite.set_colorkey(color_key)
         
-        return
-    
-    def images_at(self, rects, colorkey = None):
-
-        return [self.image_at(rect, colorkey) for rect in rects]
-    
-    def load_strip(self, rect, image_count, colorkey = None):
-        tups = [(rect[0]+rect[2]*x, rect[1], rect[2], rect[3]) for x in range(image_count)]
-
-        return self.images_at(tups, colorkey)
-
+        return sprite
 
