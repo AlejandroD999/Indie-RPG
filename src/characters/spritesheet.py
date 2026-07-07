@@ -8,17 +8,20 @@ class SpriteSheet:
 
         try:
             self.sheet = pygame.image.load(self.filename).convert()
+
         except pygame.error as e:
             print(f"Unable to load sprite sheet image: {e}") 
             raise SystemExit(e)
         
-        self.meta_data_path = self.filename.replace('png', 'json')
-        self.meta_data = self.load_meta_data(self.meta_data_path)
+        self.data_path = self.filename.replace('png', 'json')
+        self.data = self.load_meta_data(self.data_path)
+        self.sprite_frames = self.data["frames"]
+        
 
-    def load_meta_data(self, meta_data: str):
+    def load_meta_data(self, path: str):
 
         try:
-            with open(meta_data, 'r') as f:
+            with open(path, 'r') as f:
                 data = json.load(f)
         except FileNotFoundError:
             print(f"Failed to load Meta Data: {f}")
@@ -27,18 +30,22 @@ class SpriteSheet:
         return data
 
         
-    def get_sprite(self, rectangle, color_key = None):
+    def get_sprite(self, x, y, w, h):
         # Load image from rectangle
-        # Rect -> x,y,w,h
 
-        rect = pygame.Rect(rectangle)
-        sprite = pygame.Surface(rect.size).convert()
-        sprite.blit(self.sheet, (0, 0), rect)
-
-        if color_key is not None:
-            if color_key == -1:
-                color_key = sprite.get_at((0, 0))
-            sprite.set_colorkey(color_key)
+        sprite = pygame.Surface((w, h))
+        sprite.set_colorkey((0,0,0))
+        sprite.blit(self.sheet, (0, 0), (x, y, w, h))
         
         return sprite
+
+
+    def parse_sprite(self, name):
+        sprite = self.sprite_frames[name]['frame']
+        
+        x,y,w,h = sprite['x'], sprite['y'], sprite['w'], sprite['h']
+        img = self.get_sprite(x, y, w, h)
+
+        return img
+
 
