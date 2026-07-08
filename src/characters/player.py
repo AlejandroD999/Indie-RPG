@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
 
         # Stats
         self.speed = 5
-        self.dash_speed = self.speed * 1.5
+        self.dash_speed = self.speed * 2
         self.jump_height = 14
 
 
@@ -49,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         self.orientation = "right"
 
         self.dashing = False
-        self.dash_duration = 15
+        self.dash_duration = 10
         self.dash_timer = 0
 
     def update(self):
@@ -68,7 +68,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.dashing:
             if self.orientation == "right":
-                self.rect.x += self.dash_speed
+                self.rect.x += self.dash_speed 
 
             elif self.orientation == "left":
                 self.rect.x -= self.dash_speed
@@ -87,14 +87,14 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_d]:
             self.orientation = "right"    
             self.rect.x += self.speed
-            self.running_sprite += 0.15
+            self.running_sprite += 0.10
         
         self.update_running()
 
         self.rect.clamp_ip(self.SCREEN_RECT)
 
     def update_running(self):
-        if self.running_sprite >= 6:
+        if self.running_sprite >= len(self.player["running_right"]):
             self.running_sprite = 0
         
         if self.orientation == "right":
