@@ -12,18 +12,20 @@ class Player(pygame.sprite.Sprite):
         self.running_sheet = SpriteSheet(os.path.join(PLAYER_STATICS, "player_running.png")) 
                 
         self.player = {
-            "running": []
+            "running_right": [],
+            "running_left": []
         } 
 
         for frame in range(1, len(self.running_sheet.sprite_frames) + 1):
             player_frame = self.running_sheet.parse_sprite(f"player_running_{frame}")
             player_frame = pygame.transform.scale(player_frame, (self.SCREEN_RECT.w // 8, self.SCREEN_RECT.h // 4))
 
-            self.player["running"].append(player_frame)
+            self.player["running_right"].append(player_frame)
+            self.player["running_left"].append(pygame.transform.flip(player_frame, True, False))
 
         self.running_sprite = 0
 
-        self.image = self.player["running"][self.running_sprite]
+        self.image = self.player["running_right"][self.running_sprite]
         self.rect = self.image.get_rect()
         self.rect.topleft = [pos_x, pos_y]
 
@@ -80,6 +82,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_a]:
             self.orientation = "left"
             self.rect.x -= self.speed
+            self.running_sprite += 0.15
             
         if keys[pygame.K_d]:
             self.orientation = "right"    
@@ -93,8 +96,12 @@ class Player(pygame.sprite.Sprite):
     def update_running(self):
         if self.running_sprite >= 6:
             self.running_sprite = 0
+        
+        if self.orientation == "right":
+            self.image = self.player["running_right"][int(self.running_sprite)]
 
-        self.image = self.player["running"][int(self.running_sprite)]
+        elif self.orientation == "left":
+            self.image = self.player["running_left"][int(self.running_sprite)]
 
 
 
