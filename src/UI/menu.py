@@ -43,12 +43,10 @@ class MainMenu():
                 mouse_pos = pygame.mouse.get_pos()
 
                 if self.menu_buttons['play'].get_rect().collidepoint(mouse_pos):
-                    print("Collision")
                     self.app.change_screen(self.app.game)
                     return
                 
                 elif self.menu_buttons['options'].get_rect().collidepoint(mouse_pos):
-                    print("Options")
                     return
 
                 elif self.menu_buttons['quit'].get_rect().collidepoint(mouse_pos):

@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__()
         self.SCREEN_RECT = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.PLAYER_SIZE = (self.SCREEN_RECT.w // 8, self.SCREEN_RECT.h // 4)
+        self.PLAYER_SIZE = (self.SCREEN_RECT.w // 12, self.SCREEN_RECT.h // 6)
         
         self.running_sheet = SpriteSheet(os.path.join(PLAYER_STATICS, "knight_running.png")) 
                 
