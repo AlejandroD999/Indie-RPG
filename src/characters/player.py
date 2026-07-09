@@ -8,26 +8,20 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__()
         self.SCREEN_RECT = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.PLAYER_SIZE = (self.SCREEN_RECT.w // 8, self.SCREEN_RECT.h // 4)
         
-        self.running_sheet = SpriteSheet(os.path.join(PLAYER_STATICS, "player_running.png")) 
+        self.running_sheet = SpriteSheet(os.path.join(PLAYER_STATICS, "knight_running.png")) 
                 
-        self.player = {
+        self.player_actions = {
+            "idle_right": [],
+            "idle_left": [],
             "running_right": [],
             "running_left": []
         } 
 
-        for frame in range(1, len(self.running_sheet.sprite_frames) + 1):
-            player_frame = self.running_sheet.parse_sprite(f"player_running_{frame}")
-            player_frame = pygame.transform.scale(player_frame, (self.SCREEN_RECT.w // 8, self.SCREEN_RECT.h // 4))
-
-            self.player["running_right"].append(player_frame)
-            self.player["running_left"].append(pygame.transform.flip(player_frame, True, False))
-
-        self.running_sprite = 0
-
-        self.image = self.player["running_right"][self.running_sprite]
-        self.rect = self.image.get_rect()
-        self.rect.topleft = [pos_x, pos_y]
+        self.define_sprites()
+        
+        self.idle_counter = 0
 
         # Stats
         self.speed = 5
@@ -35,16 +29,12 @@ class Player(pygame.sprite.Sprite):
         self.jump_height = 14
 
 
-        # Jumping
-        self.jumping = False
-        self.GROUND = self.rect.y
-                
-        self.gravity = 0.7
-        self.y_velocity = 0
-        
-        self.standing_surface = None
-        self.jumping_surface = None
+        # Running
+        self.running = False
+        self.running_sprite = 0
+        self.running_frames_speed = self.speed / (self.speed * 5) 
 
+        
         #  Dash & Orientation
         self.orientation = "right"
 
@@ -52,11 +42,41 @@ class Player(pygame.sprite.Sprite):
         self.dash_duration = 10
         self.dash_timer = 0
 
-    def update(self):
-        keys = pygame.key.get_pressed()
-        
-        
+        self.image = self.player_actions["idle_right"][0]
+        self.rect = self.image.get_rect()
+        self.rect.topleft = [pos_x, pos_y]
 
+        # Jumping
+        self.jumping = False
+        self.GROUND = self.rect.y
+
+        self.gravity = 0.7
+        self.y_velocity = 0
+
+    
+    def define_sprites(self):
+        
+        idle_image = pygame.transform.scale(
+                pygame.image.load(os.path.join(PLAYER_STATICS, "knight_idle.png")),
+                (self.PLAYER_SIZE[0], self.PLAYER_SIZE[1]))
+
+        self.player_actions["idle_right"].append(idle_image)
+        self.player_actions["idle_left"].append(pygame.transform.flip(idle_image, True, False))
+
+        for frame in range(len(self.running_sheet.sprite_frames)):
+            player_frame = self.running_sheet.parse_sprite(f"knight_running_f{frame}")
+            player_frame = pygame.transform.scale(player_frame, (self.PLAYER_SIZE[0], self.PLAYER_SIZE[1]))
+
+            self.player_actions["running_right"].append(player_frame)
+            self.player_actions["running_left"].append(pygame.transform.flip(player_frame, True, False))
+
+
+
+    def update(self):
+
+        keys = pygame.key.get_pressed()
+        self.running = False 
+        
         if self.jumping:
             self.rect.y -= self.y_velocity
             self.y_velocity -= self.gravity
@@ -68,7 +88,7 @@ class Player(pygame.sprite.Sprite):
 
         if self.dashing:
             if self.orientation == "right":
-                self.rect.x += self.dash_speed 
+                self.rect.x += self.dash_speed
 
             elif self.orientation == "left":
                 self.rect.x -= self.dash_speed
@@ -77,31 +97,43 @@ class Player(pygame.sprite.Sprite):
 
             if self.dash_timer <= 0:
                 self.dashing = False         
+
         # Basic Movement        
 
         if keys[pygame.K_a]:
             self.orientation = "left"
             self.rect.x -= self.speed
-            self.running_sprite += 0.15
-            
+            self.running = True 
+
         if keys[pygame.K_d]:
             self.orientation = "right"    
             self.rect.x += self.speed
-            self.running_sprite += 0.10
-        
-        self.update_running()
+            self.running = True 
+
+        if self.running:
+            self.update_running()
+
+        else:
+            if self.orientation == "right":
+                self.image = self.player_actions["idle_right"][0]
+                
+            elif self.orientation == "left":
+                self.image = self.player_actions["idle_left"][0]
+
 
         self.rect.clamp_ip(self.SCREEN_RECT)
 
     def update_running(self):
-        if self.running_sprite >= len(self.player["running_right"]):
+        self.running_sprite += self.running_frames_speed 
+
+        if self.running_sprite >= len(self.player_actions["running_right"]):
             self.running_sprite = 0
-        
+
         if self.orientation == "right":
-            self.image = self.player["running_right"][int(self.running_sprite)]
+            self.image = self.player_actions["running_right"][int(self.running_sprite)]
 
         elif self.orientation == "left":
-            self.image = self.player["running_left"][int(self.running_sprite)]
+            self.image = self.player_actions["running_left"][int(self.running_sprite)]
 
 
 
@@ -110,7 +142,8 @@ class Player(pygame.sprite.Sprite):
         
 
     def handle_event(self, event):
-        
+        # TODO Implement Attack
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and not self.jumping:
                 self.y_velocity = self.jump_height    
@@ -119,3 +152,7 @@ class Player(pygame.sprite.Sprite):
             if event.key == pygame.K_LSHIFT and not self.dashing:
                 self.dashing = True
                 self.dash_timer = self.dash_duration
+
+    def test(self):
+        pass
+
