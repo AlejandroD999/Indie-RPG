@@ -9,9 +9,10 @@ class Game:
         self.__bg_image = pygame.transform.scale(pygame.image.load(BG_IMAGE_PATH), self.app.screen_size).convert()
         pygame.display.set_caption("Ethereal RPG")
                 
-        self.player = Player(
-            10,
-            (self.app.screen_size[1] - (self.app.screen_size[1] / 4))) 
+        self.player = Player(10, (self.app.screen_size[1] - (self.app.screen_size[1] / 4))) 
+        
+        self.app.camera.add(self.player)
+        
 
     def update(self):
         self.player.update()
@@ -26,7 +27,5 @@ class Game:
             self.player.handle_event(event)            
     
     def draw(self):
-        ''' Place elements into screen '''
-        self.app.screen.blit(self.__bg_image, (0, 0))
-        self.player.draw(self.app.screen)        
+        self.app.camera.custom_draw(self.player)
         pygame.display.flip()

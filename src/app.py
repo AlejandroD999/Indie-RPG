@@ -1,4 +1,5 @@
 from .config import SCREEN_WIDTH, SCREEN_HEIGHT
+from .UI.camera import Camera
 from .UI.game import Game
 from .UI.menu import MainMenu
 import pygame
@@ -11,7 +12,8 @@ class App:
         self.screen = pygame.display.set_mode(self.screen_size)        
         self.running = True
         self.clock = pygame.time.Clock()
-
+        
+        self.camera = Camera()
         self.game = Game(self)
         self.main_menu = MainMenu(self)
         self.current_screen = self.main_menu

@@ -5,11 +5,10 @@ import pygame
 import os
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos_x, pos_y):
+    def __init__(self,pos_x, pos_y):
         super().__init__()
         self.SCREEN_RECT = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.PLAYER_SIZE = (self.SCREEN_RECT.w // 16, self.SCREEN_RECT.h // 8)
-        
         self.running_sheet = SpriteSheet(os.path.join(PLAYER_STATICS, "knight_running.png")) 
                 
         self.player_actions = {
@@ -18,7 +17,6 @@ class Player(pygame.sprite.Sprite):
             "running_right": [],
             "running_left": []
         } 
-
         self.define_sprites()
         
         self.idle_counter = 0
@@ -46,6 +44,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.topleft = [pos_x, pos_y]
 
 
+
     
     def define_sprites(self):
         
@@ -71,7 +70,7 @@ class Player(pygame.sprite.Sprite):
         self.running = False 
 
         if self.dashing:
-            # TODO Dash Up & Down
+            # TODO Dash animations 
             if self.orientation == "up":
                 self.rect.y -= self.dash_speed
 
@@ -114,6 +113,7 @@ class Player(pygame.sprite.Sprite):
             self.update_running()
 
         else:
+            # TODO Idle up & down
 
             if self.orientation == "right":
                 self.image = self.player_actions["idle_right"][0]
@@ -138,6 +138,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def draw(self, screen):
+        return
         screen.blit(self.image, (self.rect.x, self.rect.y))
         
 
