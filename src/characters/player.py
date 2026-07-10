@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         super().__init__()
         self.SCREEN_RECT = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.PLAYER_SIZE = (self.SCREEN_RECT.w // 12, self.SCREEN_RECT.h // 6)
+        self.PLAYER_SIZE = (self.SCREEN_RECT.w // 16, self.SCREEN_RECT.h // 8)
         
         self.running_sheet = SpriteSheet(os.path.join(PLAYER_STATICS, "knight_running.png")) 
                 
@@ -26,7 +26,6 @@ class Player(pygame.sprite.Sprite):
         # Stats
         self.speed = 5
         self.dash_speed = self.speed * 2
-        self.jump_height = 14
 
 
         # Running
@@ -46,12 +45,6 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.topleft = [pos_x, pos_y]
 
-        # Jumping
-        self.jumping = False
-        self.GROUND = self.rect.y
-
-        self.gravity = 0.7
-        self.y_velocity = 0
 
     
     def define_sprites(self):
@@ -76,21 +69,19 @@ class Player(pygame.sprite.Sprite):
 
         keys = pygame.key.get_pressed()
         self.running = False 
-        
-        if self.jumping:
-            self.rect.y -= self.y_velocity
-            self.y_velocity -= self.gravity
-            
-            if self.rect.y >= self.GROUND:
-                self.rect.y = self.GROUND
-                self.jumping = False
-                self.y_velocity = 0 
 
         if self.dashing:
+            # TODO Dash Up & Down
+            if self.orientation == "up":
+                self.rect.y -= self.dash_speed
+
             if self.orientation == "right":
                 self.rect.x += self.dash_speed
 
-            elif self.orientation == "left":
+            if self.orientation == "down":
+                self.rect.y += self.dash_speed
+
+            if self.orientation == "left":
                 self.rect.x -= self.dash_speed
 
             self.dash_timer -= 1
@@ -99,11 +90,20 @@ class Player(pygame.sprite.Sprite):
                 self.dashing = False         
 
         # Basic Movement        
+        if keys[pygame.K_w]:
+            self.orientation = "up"
+            self.rect.y -= self.speed
+            self.running = True
 
         if keys[pygame.K_a]:
             self.orientation = "left"
             self.rect.x -= self.speed
             self.running = True 
+
+        if keys[pygame.K_s]:
+            self.orientation = "down"
+            self.rect.y += self.speed
+            self.running = True
 
         if keys[pygame.K_d]:
             self.orientation = "right"    
@@ -114,12 +114,12 @@ class Player(pygame.sprite.Sprite):
             self.update_running()
 
         else:
+
             if self.orientation == "right":
                 self.image = self.player_actions["idle_right"][0]
                 
             elif self.orientation == "left":
                 self.image = self.player_actions["idle_left"][0]
-
 
         self.rect.clamp_ip(self.SCREEN_RECT)
 
@@ -128,12 +128,12 @@ class Player(pygame.sprite.Sprite):
 
         if self.running_sprite >= len(self.player_actions["running_right"]):
             self.running_sprite = 0
-
-        if self.orientation == "right":
+        
+        if self.orientation == "up" or self.orientation == "down":
+            # Placeholder until up and down animations
             self.image = self.player_actions["running_right"][int(self.running_sprite)]
-
-        elif self.orientation == "left":
-            self.image = self.player_actions["running_left"][int(self.running_sprite)]
+            return
+        self.image = self.player_actions[f"running_{self.orientation}"][int(self.running_sprite)]
 
 
 
@@ -143,13 +143,8 @@ class Player(pygame.sprite.Sprite):
 
     def handle_event(self, event):
         # TODO Implement Attack
-
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and not self.jumping:
-                self.y_velocity = self.jump_height    
-                self.jumping = True
-        
-            if event.key == pygame.K_LSHIFT and not self.dashing:
+            if event.key == pygame.K_SPACE and not self.dashing:
                 self.dashing = True
                 self.dash_timer = self.dash_duration
 
