@@ -91,18 +91,22 @@ class Player(pygame.sprite.Sprite):
         # Basic Movement        
         if keys[pygame.K_w]:
             self.orientation = "up"
+            self.rect.y -= self.speed
             self.running = True
 
         if keys[pygame.K_a]:
             self.orientation = "left"
+            self.rect.x -= self.speed
             self.running = True 
 
         if keys[pygame.K_s]:
             self.orientation = "down"
+            self.rect.y += self.speed
             self.running = True
 
         if keys[pygame.K_d]:
             self.orientation = "right"    
+            self.rect.x += self.speed
             self.running = True 
 
         if self.running:
@@ -117,7 +121,6 @@ class Player(pygame.sprite.Sprite):
             elif self.orientation == "left":
                 self.image = self.player_actions["idle_left"][0]
 
-        self.rect.clamp_ip(self.SCREEN_RECT)
 
     def update_running(self):
         self.running_sprite += self.running_frames_speed 
@@ -134,7 +137,6 @@ class Player(pygame.sprite.Sprite):
 
 
     def draw(self, screen):
-        return
         screen.blit(self.image, (self.rect.x, self.rect.y))
         
 
