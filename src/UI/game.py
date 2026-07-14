@@ -6,11 +6,9 @@ import sys
 class Game:
     def __init__(self, app):
         self.app = app
-        self.__bg_image = pygame.transform.scale(pygame.image.load(BG_IMAGE_PATH), self.app.screen_size).convert()
         pygame.display.set_caption("Ethereal RPG")
                 
-        self.player = Player(10, (self.app.screen_size[1] - (self.app.screen_size[1] / 4))) 
-        
+        self.player = Player(self.app.camera, 10, (self.app.screen_size[1] - (self.app.screen_size[1] / 4))) 
         self.app.camera.add(self.player)
         
 

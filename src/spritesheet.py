@@ -12,7 +12,6 @@ class SpriteSheet:
         except pygame.error as e:
             print(f"Unable to load sprite sheet image: {e}") 
             raise SystemExit(e)
-        
         self.data_path = self.filename.replace('png', 'json')
         self.data = self.load_meta_data(self.data_path)
         self.sprite_frames = self.data["frames"]

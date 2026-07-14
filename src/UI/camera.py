@@ -1,4 +1,5 @@
 from ..paths import BG_IMAGE_PATH
+import os
 import pygame
 
 # TODO Modify player movement
@@ -13,7 +14,7 @@ class Camera(pygame.sprite.Group):
         self.half_h = self.display_surface.get_size()[1] // 2
 
         self.ground_surf = pygame.transform.scale(
-                pygame.image.load(BG_IMAGE_PATH).convert(),
+                pygame.image.load(os.path.join(BG_IMAGE_PATH, "ground.png")).convert(),
                 (
                     self.display_surface.get_size()[0] * 4,
                     self.display_surface.get_size()[1] * 4,
@@ -39,8 +40,8 @@ class Camera(pygame.sprite.Group):
         self.display_surface.blit(self.ground_surf, (-self.offset.x, -self.offset.y))
 
         for sprite in self.sprites():
+            print(type(sprite))
             self.display_surface.blit(sprite.image, (sprite.rect.x - self.offset.x, sprite.rect.y - self.offset.y))
-
 
 
         

@@ -1,16 +1,19 @@
 from ..paths import PLAYER_STATICS
-from .spritesheet import SpriteSheet
+from ..spritesheet import SpriteSheet
 from ..config import SCREEN_WIDTH, SCREEN_HEIGHT
+from .attack import Attack
 import pygame
 import os
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self,pos_x, pos_y):
+    def __init__(self, camera, pos_x, pos_y):
         super().__init__()
         self.SCREEN_RECT = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
         self.PLAYER_SIZE = (self.SCREEN_RECT.w // 16, self.SCREEN_RECT.h // 8)
         self.running_sheet = SpriteSheet(os.path.join(PLAYER_STATICS, "knight_running.png")) 
-                
+        
+        self.camera = camera
+
         self.player_actions = {
             "idle_right": [],
             "idle_left": [],
@@ -38,14 +41,15 @@ class Player(pygame.sprite.Sprite):
         self.dashing = False
         self.dash_duration = 10
         self.dash_timer = 0
+        
 
         self.image = self.player_actions["idle_right"][0]
         self.rect = self.image.get_rect()
         self.rect.topleft = [pos_x, pos_y]
 
-
-
-    
+        # Attack
+        self.attacking = False
+   
     def define_sprites(self):
         
         idle_image = pygame.transform.scale(
@@ -68,7 +72,8 @@ class Player(pygame.sprite.Sprite):
 
         keys = pygame.key.get_pressed()
         self.running = False 
-
+        
+        # Dash
         if self.dashing:
             # TODO Dash animations 
             if self.orientation == "up":
@@ -87,6 +92,12 @@ class Player(pygame.sprite.Sprite):
 
             if self.dash_timer <= 0:
                 self.dashing = False         
+
+        # Attacking
+        if self.attacking:
+            if self.player_attack.update():
+                self.attacking = False
+
 
         # Basic Movement        
         if keys[pygame.K_w]:
@@ -135,17 +146,22 @@ class Player(pygame.sprite.Sprite):
         self.image = self.player_actions[f"running_{self.orientation}"][int(self.running_sprite)]
 
 
-
-    def draw(self, screen):
-        screen.blit(self.image, (self.rect.x, self.rect.y))
-        
-
     def handle_event(self, event):
-        # TODO Implement Attack
         if event.type == pygame.KEYDOWN:
+
             if event.key == pygame.K_SPACE and not self.dashing:
                 self.dashing = True
                 self.dash_timer = self.dash_duration
+
+            if event.key == pygame.K_k and not self.attacking:
+                self.player_attack = Attack(
+                        "slash",
+                        self.orientation,
+                        self.rect.x,
+                        self.rect.y
+                        ) 
+                self.camera.add(self.player_attack)
+                self.attacking = True
 
     def test(self):
         pass
