@@ -1,4 +1,4 @@
-from ..characters.player import Player
+from ..sprites.player import Player
 from ..paths import BG_IMAGE_PATH, BUG_STATICS
 import pygame
 import sys
