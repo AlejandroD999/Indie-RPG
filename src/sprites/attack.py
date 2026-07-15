@@ -4,13 +4,17 @@ import os
 import pygame
 
 class Attack(pygame.sprite.Sprite):
-    def __init__(self, attack_name, orientation, pos_x, pos_y, width, height):
+    def __init__(self, attack_name, orientation, central_body_rect, width, height):
         super().__init__()
         self.full_attack_name = f"{attack_name}_{orientation}"
-        self.attack_size = (width, height)
-        self._orientation = orientation
-        self.attack_sheet = SpriteSheet(os.path.join(ATTACKS, attack_name, f"{self.full_attack_name}.png")) 
 
+        self.central_body = central_body_rect
+        self.attack_size = (width, height)
+        self.orientation = orientation
+        self.pos = [self.central_body.x, self.central_body.y]
+
+        
+        self.attack_sheet = SpriteSheet(os.path.join(ATTACKS, attack_name, f"{self.full_attack_name}.png")) 
         self.attack = {}
         self.define_sprites()
 
@@ -18,16 +22,35 @@ class Attack(pygame.sprite.Sprite):
 
         self.image = self.attack[self.full_attack_name][0] 
         self.rect = self.image.get_rect()
-        self.rect.topleft = (pos_x, pos_y)
-    def center_attack(self, central_body_rect)
+        self.center_attack()
+        self.rect.topleft = self.pos 
+
+    def center_attack(self):
+        # TODO Fix actual image (temporary offsets)
+
+        OFFSETS = {
+                "up": (-20, -50),
+                "down": (-20, 25),
+                "left": (-90, -15),
+                "right": (45, -15),
+                }
+
         if self.orientation == "up":
-           pass 
-        elif self.orientation == "left":
-            pass
+            self.rect.midbottom = self.central_body.midtop
+
         elif self.orientation == "down":
-            pass
+            self.rect.midtop = self.central_body.midtop
+
+        elif self.orientation == "left":
+            self.rect.midright = self.central_body.midleft
+
+
         elif self.orientation == "right":
-            pass
+            self.rect.midleft = self.central_body.midright
+
+        dx, dy = OFFSETS[self.orientation]
+        self.pos[0] += dx
+        self.pos[1] += dy
 
     def define_sprites(self):
         # Define frames in self.attack 
@@ -42,7 +65,7 @@ class Attack(pygame.sprite.Sprite):
         if self.frame_count >= len(self.attack[self.full_attack_name]):
             self.kill()
             return True
-
+        
         self.image = self.attack[self.full_attack_name][int(self.frame_count)]
         self.frame_count += 0.25
 

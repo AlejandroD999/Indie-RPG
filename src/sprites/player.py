@@ -161,8 +161,7 @@ class Player(pygame.sprite.Sprite):
                 self.player_attack = Attack(
                         "slash",
                         self.orientation,
-                        self.rect.x + self.PLAYER_SIZE[0] // 2,
-                        self.rect.y - self.PLAYER_SIZE[1] // 2,
+                        self.rect,
                         self.PLAYER_SIZE[0] * 2,
                         self.PLAYER_SIZE[1] * 2
                         ) 
