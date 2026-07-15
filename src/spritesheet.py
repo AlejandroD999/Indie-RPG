@@ -47,4 +47,3 @@ class SpriteSheet:
 
         return img
 
-

@@ -16,6 +16,7 @@ class App:
         self.camera = Camera()
         self.game = Game(self)
         self.main_menu = MainMenu(self)
+
         self.current_screen = self.main_menu
     
     def change_screen(self, screen):
@@ -31,3 +32,4 @@ class App:
             self.clock.tick(60)
         pygame.quit()
         sys.exit()
+

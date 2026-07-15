@@ -4,11 +4,11 @@ import os
 import pygame
 
 class Attack(pygame.sprite.Sprite):
-    def __init__(self, attack_name, orientation, pos_x, pos_y):
+    def __init__(self, attack_name, orientation, pos_x, pos_y, width, height):
         super().__init__()
         self.full_attack_name = f"{attack_name}_{orientation}"
+        self.attack_size = (width, height)
         self._orientation = orientation
-
         self.attack_sheet = SpriteSheet(os.path.join(ATTACKS, attack_name, f"{self.full_attack_name}.png")) 
 
         self.attack = {}
@@ -19,14 +19,23 @@ class Attack(pygame.sprite.Sprite):
         self.image = self.attack[self.full_attack_name][0] 
         self.rect = self.image.get_rect()
         self.rect.topleft = (pos_x, pos_y)
-    
+    def center_attack(self, central_body_rect)
+        if self.orientation == "up":
+           pass 
+        elif self.orientation == "left":
+            pass
+        elif self.orientation == "down":
+            pass
+        elif self.orientation == "right":
+            pass
+
     def define_sprites(self):
         # Define frames in self.attack 
         self.attack[self.full_attack_name] = []
 
         for frame in range(len(self.attack_sheet.sprite_frames)):
             attack_frame = self.attack_sheet.parse_sprite(f"{self.full_attack_name}_f{frame}")
-
+            attack_frame = pygame.transform.scale(attack_frame, self.attack_size)
             self.attack[self.full_attack_name].append(attack_frame)
 
     def update(self):
