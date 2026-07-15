@@ -21,7 +21,8 @@ class Player(pygame.sprite.Sprite):
             "running_left": []
         } 
         self.define_sprites()
-        
+
+        # Counters
         self.idle_counter = 0
 
         # Stats
@@ -69,19 +70,20 @@ class Player(pygame.sprite.Sprite):
 
 
     def update(self):
-
         keys = pygame.key.get_pressed()
         self.running = False 
+        self.speed = 5
 
-            # Attacking
+
+        if self.attacking:
+            self.speed /= 2 
+
+        # Attacking
         if self.attacking:
             # TODO turn player idle or attack animations
-
             if self.player_attack.update():
                 self.attacking = False
-            self.dash_timer = 0
             
-            return
         # Dash
         if self.dashing:
             # TODO Dash animations 
