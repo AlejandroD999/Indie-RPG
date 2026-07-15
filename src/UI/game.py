@@ -7,8 +7,8 @@ class Game:
     def __init__(self, app):
         self.app = app
         pygame.display.set_caption("Ethereal RPG")
-                
-        self.player = Player(self.app.camera, 10, (self.app.screen_size[1] - (self.app.screen_size[1] / 4))) 
+         
+        self.player = Player(self.app.camera, self.app.camera.ground_rect.width / 2, (self.app.screen_size[1] - (self.app.screen_size[1] / 4))) 
         self.app.camera.add(self.player)
         
 

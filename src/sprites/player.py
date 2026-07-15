@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, camera, pos_x, pos_y):
         super().__init__()
         self.SCREEN_RECT = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
-        self.PLAYER_SIZE = (self.SCREEN_RECT.w // 16, self.SCREEN_RECT.h // 8)
+        self.PLAYER_SIZE = (self.SCREEN_RECT.w // 20, self.SCREEN_RECT.h // 10)
         self.running_sheet = SpriteSheet(os.path.join(PLAYER_STATICS, "knight_running.png")) 
         
         self.camera = camera
@@ -72,7 +72,16 @@ class Player(pygame.sprite.Sprite):
 
         keys = pygame.key.get_pressed()
         self.running = False 
-        
+
+            # Attacking
+        if self.attacking:
+            # TODO turn player idle or attack animations
+
+            if self.player_attack.update():
+                self.attacking = False
+            self.dash_timer = 0
+            
+            return
         # Dash
         if self.dashing:
             # TODO Dash animations 
@@ -92,11 +101,6 @@ class Player(pygame.sprite.Sprite):
 
             if self.dash_timer <= 0:
                 self.dashing = False         
-
-        # Attacking
-        if self.attacking:
-            if self.player_attack.update():
-                self.attacking = False
 
 
         # Basic Movement        
