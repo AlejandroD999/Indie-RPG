@@ -12,7 +12,7 @@ class Game:
         self.player = Player(self.app.camera, self.app.camera.ground_rect.width / 2, (self.app.screen_size[1] - (self.app.screen_size[1] / 4))) 
         self.enemy = Enemy(self.player, 
                            self.app.camera.ground_rect.width / 2, (self.app.screen_size[1] - (self.app.screen_size[1] / 4)),
-                           size = (self.app.screen_size[0] // 8, self.app.screen_size[1] // 4)
+                           size = (self.app.screen_size[0] // 12, self.app.screen_size[1] // 6)
                            )
 
         self.app.camera.add(self.enemy)

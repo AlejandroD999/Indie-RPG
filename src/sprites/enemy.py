@@ -38,6 +38,8 @@ class Enemy(pygame.sprite.Sprite):
                 self.health -= self.player.damage / 10 
 
     def persecute_player(self):
+        if self.rect.colliderect(self.player.rect):
+            return
 
         if self.rect.x < self.player.rect.x:
             self.orientation = "right"
