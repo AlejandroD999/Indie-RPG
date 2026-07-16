@@ -10,20 +10,25 @@ class Enemy(pygame.sprite.Sprite):
         size: tuple -> (width, height)
         """
         super().__init__()
-
+        self.pos = [pos_x, pos_y]
         self.size = size
         self.player = player
+        self.orientation = "right"
 
         # Enemy Stats
         self.health = 20
+        self.speed = 2
 
-        self.image = (pygame.image.load(os.path.join(BUGS_STATICS, "larva.png")))
+        self.image = pygame.image.load(os.path.join(BUGS_STATICS, "larva.png"))
 
         if len(self.size) > 1:
             self.image = pygame.transform.scale(self.image, self.size)
 
+        self.original_image = self.image
+        self.image_left = pygame.transform.flip(self.image, True, False)
+
         self.rect = self.image.get_rect()
-        self.rect.topleft = [pos_x, pos_y]
+        self.rect.topleft = self.pos 
     
     def check_collision(self):
         attack = self.player.player_attack
@@ -33,10 +38,37 @@ class Enemy(pygame.sprite.Sprite):
                 self.health -= self.player.damage / 10 
 
     def persecute_player(self):
-        pass
+
+        if self.rect.x < self.player.rect.x:
+            self.orientation = "right"
+            self.rect.x += self.speed
+
+        if self.rect.x > self.player.rect.x:
+            self.orientation = "left"
+            self.rect.x -= self.speed
+
+        if self.rect.y < self.player.rect.y:
+            self.rect.y += self.speed
+
+        if self.rect.y > self.player.rect.y:
+            self.rect.y -= self.speed
+                 
+
 
     def update(self):
+        print(self.health)
+
         if self.health <= 0:
             self.kill()
-        print(self.health)
+
         self.check_collision()
+        
+        if self.orientation == "left":
+            self.image = self.image_left 
+        else:
+            self.image = self.original_image 
+
+        self.persecute_player()
+
+
+
