@@ -35,7 +35,8 @@ class Camera(pygame.sprite.Group):
         self.bind_target(self.ground_rect, target.rect)
 
     def custom_draw(self, player):
-        # Draw ground
+        # TODO Avoid sprite to pass through each other (collision)
+
         self.center_target(player)
         self.display_surface.blit(self.ground_surf, (-self.offset.x, -self.offset.y))
 

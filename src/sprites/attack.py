@@ -67,7 +67,7 @@ class Attack(pygame.sprite.Sprite):
             return True
         
         self.image = self.attack[self.full_attack_name][int(self.frame_count)]
-        self.frame_count += 0.5
+        self.frame_count += 0.5 
 
         return False
 

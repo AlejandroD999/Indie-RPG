@@ -10,7 +10,7 @@ BG_IMAGE_PATH = os.path.join(SRC_PATH, "statics/themes")
 
 # Characters
 PLAYER_STATICS = os.path.join(SRC_PATH, "statics/player")
-BUG_STATICS = os.path.join(SRC_PATH, "statics/bugs")
+BUGS_STATICS = os.path.join(SRC_PATH, "statics/bugs")
 
 # Misc
 ATTACKS = os.path.join(SRC_PATH, "statics/attacks")

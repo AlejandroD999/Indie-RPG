@@ -20,12 +20,15 @@ class Player(pygame.sprite.Sprite):
             "running_right": [],
             "running_left": []
         } 
+        self.player_attack = None
         self.define_sprites()
 
         # Counters
         self.idle_counter = 0
 
         # Stats
+        self.health = 20
+        self.damage = 5 
         self.speed = 5
         self.dash_speed = self.speed * 2
 
@@ -132,12 +135,11 @@ class Player(pygame.sprite.Sprite):
         else:
             # TODO Idle up & down
 
-            if self.orientation == "right":
+            if self.orientation != "left":
                 self.image = self.player_actions["idle_right"][0]
                 
-            elif self.orientation == "left":
+            elif self.orientation != "right":
                 self.image = self.player_actions["idle_left"][0]
-
 
     def update_running(self):
         self.running_sprite += self.running_frames_speed 
