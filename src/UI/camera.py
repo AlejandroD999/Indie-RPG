@@ -14,10 +14,10 @@ class Camera(pygame.sprite.Group):
         self.half_h = self.display_surface.get_size()[1] // 2
 
         self.ground_surf = pygame.transform.scale(
-                pygame.image.load(os.path.join(BG_IMAGE_PATH, "ground.png")).convert(),
+                pygame.image.load(os.path.join(BG_IMAGE_PATH, "beginner_ground.png")).convert(),
                 (
-                    self.display_surface.get_size()[0] * 4,
-                    self.display_surface.get_size()[1] * 4,
+                    self.display_surface.get_size()[0] * 1.5,
+                    self.display_surface.get_size()[1] * 1.5,
                 ))
 
         self.ground_rect = self.ground_surf.get_rect(topleft = (0, 0))
