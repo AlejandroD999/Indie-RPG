@@ -38,6 +38,7 @@ class Camera(pygame.sprite.Group):
         # TODO Avoid sprite to pass through each other (collision)
         self.center_target(player)
         self.display_surface.blit(self.ground_surf, (-self.offset.x, -self.offset.y))
+
         for sprite in self.sprites():
             self.display_surface.blit(sprite.image, (sprite.rect.x - self.offset.x, sprite.rect.y - self.offset.y))
 

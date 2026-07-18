@@ -16,7 +16,7 @@ class Enemy(pygame.sprite.Sprite):
         self.orientation = "right"
 
         # Enemy Stats
-        self.health = 20
+        self.hp = 20
         self.speed = 2
 
         self.image = pygame.image.load(os.path.join(BUGS_STATICS, "larva.png"))
@@ -35,7 +35,7 @@ class Enemy(pygame.sprite.Sprite):
 
         if attack: 
             if self.player.attacking and self.rect.colliderect(attack.rect):
-                self.health -= self.player.damage / 10 
+                self.hp -= self.player.damage / 10 
 
     def persecute_player(self):
         if self.rect.colliderect(self.player.rect):
@@ -58,9 +58,8 @@ class Enemy(pygame.sprite.Sprite):
 
 
     def update(self):
-        print(self.health)
 
-        if self.health <= 0:
+        if self.hp <= 0:
             self.kill()
 
         self.check_collision()
