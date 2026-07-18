@@ -1,5 +1,6 @@
 from ..sprites.player import Player
 from ..sprites.enemy import Enemy
+from .health_bar import HealthBar
 from ..paths import BG_IMAGE_PATH
 import pygame
 import sys
@@ -18,10 +19,17 @@ class Game:
         self.app.camera.add(self.enemy)
         self.app.camera.add(self.player)
         
+        self.health_bar = HealthBar(self.app.screen, 5, 5, 250, 25, self.player.hp) 
+
+    def end_game(self):
+        self.player.kill()
+
+        self.app.change_screen(self.app.main_menu)        
 
     def update(self):
         self.player.update()
         self.enemy.update()
+        self.health_bar.update(self.player.hp)
 
     def handle_events(self):
         ''' Handle all game events'''
@@ -34,4 +42,5 @@ class Game:
     
     def draw(self):
         self.app.camera.custom_draw(self.player)
+        self.health_bar.draw()
         pygame.display.flip()

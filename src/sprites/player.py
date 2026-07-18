@@ -24,10 +24,11 @@ class Player(pygame.sprite.Sprite):
         self.define_sprites()
 
         # Counters
+        self.is_alive = True
         self.idle_counter = 0
 
         # Stats
-        self.health = 20
+        self.hp= 100 
         self.damage = 5 
         self.speed = 5
         self.dash_speed = self.speed * 2
@@ -77,6 +78,9 @@ class Player(pygame.sprite.Sprite):
         self.running = False 
         self.speed = 5
 
+        if self.hp <= 0:
+            self.is_alive = False
+            return
 
         if self.attacking:
             self.speed /= 2 
@@ -107,6 +111,8 @@ class Player(pygame.sprite.Sprite):
             if self.dash_timer <= 0:
                 self.dashing = False         
 
+        if keys[pygame.K_i]:
+            self.hp -= 1
 
         # Basic Movement        
         if keys[pygame.K_w]:
@@ -173,5 +179,5 @@ class Player(pygame.sprite.Sprite):
                 self.attacking = True
 
     def test(self):
-        pass
+        print(self.hp)
 
