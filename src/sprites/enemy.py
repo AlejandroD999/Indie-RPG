@@ -12,8 +12,9 @@ class Enemy(pygame.sprite.Sprite):
         super().__init__()
         self.pos = [pos_x, pos_y]
         self.size = size
-        self.player = player
         self.orientation = "right"
+
+        self.player = player
 
         # Enemy Stats
         self.hp = 20
@@ -32,6 +33,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.topleft = self.pos 
     
     def check_collision(self):
+            
         attack = self.player.player_attack
 
         if attack: 
@@ -39,6 +41,8 @@ class Enemy(pygame.sprite.Sprite):
                 self.hp -= self.player.damage / 10 
 
     def persecute_player(self):
+
+        
 
         if self.rect.x < self.player.rect.x:
             self.orientation = "right"
@@ -60,6 +64,27 @@ class Enemy(pygame.sprite.Sprite):
 
         if self.hp <= 0:
             self.kill()
+
+        if self.hitbox.colliderect(self.player.hitbox):
+
+            overlap_rect = self.hitbox.clip(self.player.hitbox)
+
+            print("Enemy", self.hitbox)
+            print("Player", self.player.hitbox)
+            print("Overlap", overlap_rect) 
+
+            if overlap_rect.width < overlap_rect.height:
+                if self.rect.centerx < self.player.rect.centerx:
+                    self.rect.right = self.player.rect.left
+                else:
+                    self.rect.left = self.player.rect.right
+            else:
+                if self.rect.centery < self.player.rect.centery:
+                    self.rect.bottom = self.player.rect.top
+                else:
+                    self.rect.top = self.player.rect.bottom
+        
+
 
         self.check_collision()
         

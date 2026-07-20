@@ -72,8 +72,6 @@ class Player(pygame.sprite.Sprite):
             self.player_actions["running_right"].append(player_frame)
             self.player_actions["running_left"].append(pygame.transform.flip(player_frame, True, False))
 
-
-
     def update(self):
         keys = pygame.key.get_pressed()
         self.running = False 

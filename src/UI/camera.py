@@ -41,9 +41,6 @@ class Camera(pygame.sprite.Group):
         self.display_surface.blit(self.ground_surf, (-self.offset.x, -self.offset.y))
 
         for sprite in self.sprites():
-            if player.hitbox.colliderect(sprite.hitbox) and sprite != player:
-                # TODO Handle player & sprite overlap 
-                return
             self.display_surface.blit(sprite.image, (sprite.rect.x - self.offset.x, sprite.rect.y - self.offset.y))
 
 

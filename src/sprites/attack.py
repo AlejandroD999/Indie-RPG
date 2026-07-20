@@ -22,6 +22,7 @@ class Attack(pygame.sprite.Sprite):
 
         self.image = self.attack[self.full_attack_name][0] 
         self.rect = self.image.get_rect()
+        self.hitbox = self.rect.copy()
         self.center_attack()
         self.rect.topleft = self.pos 
 
@@ -51,6 +52,8 @@ class Attack(pygame.sprite.Sprite):
         dx, dy = OFFSETS[self.orientation]
         self.pos[0] += dx
         self.pos[1] += dy
+
+        self.hitbox.center = self.rect.center
 
     def define_sprites(self):
         # Define frames in self.attack 
