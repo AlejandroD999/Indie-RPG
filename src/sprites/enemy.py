@@ -28,6 +28,7 @@ class Enemy(pygame.sprite.Sprite):
         self.image_left = pygame.transform.flip(self.image, True, False)
 
         self.rect = self.image.get_rect()
+        self.hitbox = self.rect.copy()
         self.rect.topleft = self.pos 
     
     def check_collision(self):
@@ -38,8 +39,6 @@ class Enemy(pygame.sprite.Sprite):
                 self.hp -= self.player.damage / 10 
 
     def persecute_player(self):
-        if self.rect.colliderect(self.player.rect):
-            return
 
         if self.rect.x < self.player.rect.x:
             self.orientation = "right"
@@ -55,7 +54,7 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.y > self.player.rect.y:
             self.rect.y -= self.speed
                  
-
+        self.hitbox.center = self.rect.center
 
     def update(self):
 

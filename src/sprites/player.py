@@ -50,6 +50,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = self.player_actions["idle_right"][0]
         self.rect = self.image.get_rect()
+        self.hitbox = self.rect.copy()
         self.rect.topleft = [pos_x, pos_y]
 
         # Attack
@@ -146,6 +147,8 @@ class Player(pygame.sprite.Sprite):
                 
             elif self.orientation != "right":
                 self.image = self.player_actions["idle_left"][0]
+
+        self.hitbox.center = self.rect.center
 
     def update_running(self):
         self.running_sprite += self.running_frames_speed 

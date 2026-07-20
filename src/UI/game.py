@@ -56,8 +56,13 @@ class Game:
             self.player.handle_event(event)            
     
     def draw(self):
+
         self.app.camera.custom_draw(self.player)
 
         self.player_health_bar.draw()
         self.enemy_health_bar.draw(self.app.camera)
         pygame.display.flip()
+
+
+
+

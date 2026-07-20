@@ -8,10 +8,10 @@ class Camera(pygame.sprite.Group):
     def __init__(self):
         super().__init__()
         self.display_surface = pygame.display.get_surface()
-
-        self.offset = pygame.math.Vector2()
         self.half_w = self.display_surface.get_size()[0] // 2
         self.half_h = self.display_surface.get_size()[1] // 2
+
+        self.offset = pygame.math.Vector2()
 
         self.ground_surf = pygame.transform.scale(
                 pygame.image.load(os.path.join(BG_IMAGE_PATH, "beginner_ground.png")).convert(),
@@ -21,6 +21,7 @@ class Camera(pygame.sprite.Group):
                 ))
 
         self.ground_rect = self.ground_surf.get_rect(topleft = (0, 0))
+
     def bind_target(self, surface_rect, target_rect):
         target_rect.x = max(0, min(target_rect.x, surface_rect.width - target_rect.width)) 
         target_rect.y = max(0, min(target_rect.y, surface_rect.height - target_rect.height))
@@ -35,11 +36,14 @@ class Camera(pygame.sprite.Group):
         self.bind_target(self.ground_rect, target.rect)
 
     def custom_draw(self, player):
-        # TODO Avoid sprite to pass through each other (collision)
+
         self.center_target(player)
         self.display_surface.blit(self.ground_surf, (-self.offset.x, -self.offset.y))
 
         for sprite in self.sprites():
+            if player.hitbox.colliderect(sprite.hitbox) and sprite != player:
+                # TODO Handle player & sprite overlap 
+                return
             self.display_surface.blit(sprite.image, (sprite.rect.x - self.offset.x, sprite.rect.y - self.offset.y))
 
 
