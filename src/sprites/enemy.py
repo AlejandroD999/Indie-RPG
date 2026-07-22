@@ -42,8 +42,6 @@ class Enemy(pygame.sprite.Sprite):
 
     def persecute_player(self):
 
-        
-
         if self.rect.x < self.player.rect.x:
             self.orientation = "right"
             self.rect.x += self.speed
@@ -68,10 +66,6 @@ class Enemy(pygame.sprite.Sprite):
         if self.hitbox.colliderect(self.player.hitbox):
 
             overlap_rect = self.hitbox.clip(self.player.hitbox)
-
-            print("Enemy", self.hitbox)
-            print("Player", self.player.hitbox)
-            print("Overlap", overlap_rect) 
 
             if overlap_rect.width < overlap_rect.height:
                 if self.rect.centerx < self.player.rect.centerx:
