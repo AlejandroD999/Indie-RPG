@@ -2,6 +2,7 @@ from ..sprites.player import Player
 from ..sprites.enemy import Enemy
 from .health_bar import HealthBar
 from ..paths import BG_IMAGE_PATH
+from .inventory import Inventory
 import pygame
 import sys
 
@@ -9,7 +10,8 @@ class Game:
     def __init__(self, app):
         self.app = app
         pygame.display.set_caption("Ethereal RPG")
-         
+
+        self.inventory = Inventory(20, 30, 5, 10)
         self.player = Player(self.app.camera, self.app.camera.ground_rect.width / 2, (self.app.screen_size[1] - (self.app.screen_size[1] / 4))) 
         self.enemy = Enemy(self.player, 
                            self.app.camera.ground_rect.width / 2, (self.app.screen_size[1] - (self.app.screen_size[1] / 4)),
@@ -19,9 +21,12 @@ class Game:
         
         self.app.camera.add(self.enemy)
         self.app.camera.add(self.player)
-
         
-    
+        self.inventory.add_item("lettuce", 2)
+        self.inventory.add_item("sword", 1)
+
+        self.inventory.return_items()
+
     def define_health_bars(self):
         self.player_health_bar = HealthBar(self.app.screen, 5, 5, 250, 25, self.player.hp) 
 
